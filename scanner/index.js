@@ -1,1 +1,4 @@
-console.log("test npm start")
+'use strict';
+
+const chromeLauncher = require('chrome-launcher')
+const crp = require('chrome-remote-interface')
