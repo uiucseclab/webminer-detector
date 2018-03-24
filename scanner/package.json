@@ -11,6 +11,8 @@
   "license": "UNLICENSED",
   "dependencies": {
     "chrome-launcher": "^0.10.2",
-    "chrome-remote-interface": "^0.25.5"
+    "chrome-remote-interface": "^0.25.5",
+    "fs-extra": "^5.0.0",
+    "lodash": "^4.17.5"
   }
 }
