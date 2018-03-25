@@ -39,4 +39,4 @@ async function entryFunction(profilingDuration) {
   }
 }
 
-entryFunction(3000);
+entryFunction(10000);
