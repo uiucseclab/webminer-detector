@@ -22,18 +22,20 @@ async function entryFunction(profilingDuration) {
     });
     const {Page, Profiler, Performance} = client;
     // setup handlers
+		await Profiler.setSamplingInterval({"interval": 100});
 		await Profiler.enable();
 		await Performance.enable();
 		await Page.enable();
 
-		let metrics = [];
-		const metricsInterval = setInterval(() => {
-			metrics.push({"metrics": Performance.getMetrics(), "time": Date.now()});
-		}, 100);
-
     // enable events then start!
     await Page.navigate({url: 'https://www.cryptonoter.me/demo.php'});
 		await Profiler.start();
+
+		let metrics = [];
+		const metricsInterval = setInterval(async () => {
+			let m = await client.send('Performance.getMetrics');
+			metrics.push({"metrics": m, "time": Date.now()});
+		}, 100);
 		await Profiler.startPreciseCoverage(true, true);
     await Page.loadEventFired();
 		await sleep(profilingDuration);
@@ -54,4 +56,4 @@ async function entryFunction(profilingDuration) {
   }
 }
 
-entryFunction(60000);
+entryFunction(10000);
