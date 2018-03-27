@@ -20,17 +20,32 @@ async function entryFunction(profilingDuration) {
       host: 'localhost',
       port: chrome.port
     });
-    const {Page, Profiler} = client;
+    const {Page, Profiler, Performance} = client;
     // setup handlers
 		await Profiler.enable();
+		await Performance.enable();
 		await Page.enable();
+
+		let metrics = [];
+		const metricsInterval = setInterval(() => {
+			metrics.push({"metrics": Performance.getMetrics(), "time": Date.now()});
+		}, 100);
+
     // enable events then start!
     await Page.navigate({url: 'https://www.cryptonoter.me/demo.php'});
 		await Profiler.start();
+		await Profiler.startPreciseCoverage(true, true);
     await Page.loadEventFired();
 		await sleep(profilingDuration);
+		
+		
+		clearInterval(metricsInterval);
+		const preciseProfilerOutput = await Profiler.takePreciseCoverage();
+		await Profiler.stopPreciseCoverage();
 		const profilerOutput = await Profiler.stop();
+		await fse.writeJson('preciseProfilerOutput.json', preciseProfilerOutput);
 		await fse.writeJson('profilerOutput.json', profilerOutput);
+		await fse.writeJson('performanceOutput.json', metrics);
   } catch (err) {
     console.error(err);
   } finally {
@@ -39,4 +54,4 @@ async function entryFunction(profilingDuration) {
   }
 }
 
-entryFunction(10000);
+entryFunction(60000);
