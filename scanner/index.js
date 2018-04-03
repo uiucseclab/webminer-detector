@@ -14,12 +14,8 @@ async function sleep(t) {
   });
 }
 
-var TRACE_CATEGORIES = [
-  "blink",
-  "cc",
-  "toplevel",
-  "v8",
-];
+// These are the default tracing categories from Chrome
+var TRACE_CATEGORIES = "blink,cc,netlog,renderer.scheduler,toplevel,v8";
 
 async function entryFunction(url, profilingDuration) {
   try {
@@ -35,28 +31,27 @@ async function entryFunction(url, profilingDuration) {
     await Page.navigate({url: url});
     await Page.loadEventFired();
     console.log('Page is loaded. Starting profiler...')
-    await Tracing.start({
-      "categories": TRACE_CATEGORIES.join(',')
-    });
 
     // Handle tracing events
     const tracingOutput = [];
     Tracing.dataCollected(data => data.value.forEach(x =>
       tracingOutput.push(x)
     ))
+    await Tracing.start();
 
 		await sleep(profilingDuration);
+
     console.log("Terminating...")
     await Tracing.end();
-    console.log("Terminating...")
-    await sleep(3000)
+    await Tracing.tracingComplete();
 		await fse.writeJson('tracingOutput.json', tracingOutput);
-    console.log("Terminating...")
   } catch (err) {
     console.error(err);
+    console.log("Terminating...")
   } finally {
     chrome && chrome.kill();
     client && (await client.close());
+    console.log("Terminated")
   }
 }
 
