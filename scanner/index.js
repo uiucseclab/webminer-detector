@@ -28,7 +28,10 @@ async function entryFunction(profilingDuration) {
 		await Page.enable();
 
     // enable events then start!
-    await Page.navigate({url: 'https://www.cryptonoter.me/demo.php'});
+    // await Page.navigate({url: 'https://www.cryptonoter.me/demo.php'});
+    await Page.navigate({url: 'https://www.buzzfeed.com/zoetillman/a-lawyer-who-admitted-lying-to-the-special-counsels-office?utm_term=.mh4gdNa8kp#.slbbXwyprN'});
+    // await Page.navigate({url: 'https://krakenbenchmark.mozilla.org/kraken-1.1/driver.html'});
+    // await Page.navigate({url: 'https://www.google.com/'});
 		await Profiler.start();
 
 		let metrics = [];
@@ -39,8 +42,8 @@ async function entryFunction(profilingDuration) {
 		await Profiler.startPreciseCoverage(true, true);
     await Page.loadEventFired();
 		await sleep(profilingDuration);
-		
-		
+
+
 		clearInterval(metricsInterval);
 		const preciseProfilerOutput = await Profiler.takePreciseCoverage();
 		await Profiler.stopPreciseCoverage();
