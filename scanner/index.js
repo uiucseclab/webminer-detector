@@ -7,6 +7,7 @@ const chromeLauncher = require('chrome-launcher');
 const crp = require('chrome-remote-interface');
 const fse = require('fs-extra');
 const process = require('process');
+const pidusage = require('pidusage');
 
 async function sleep(t) {
   await new Promise(resolve => {
@@ -15,9 +16,9 @@ async function sleep(t) {
 }
 
 // These are the default tracing categories from Chrome
-var TRACE_CATEGORIES = "blink,cc,netlog,renderer.scheduler,toplevel,v8";
+var TRACE_CATEGORIES = "cdp.perf,blink,cc,netlog,renderer.scheduler,toplevel,v8";
 
-async function entryFunction(url, profilingDuration) {
+async function entryFunction(url, profilingDuration, outputName) {
   try {
     var chrome = await chromeLauncher.launch({
       chromeFlags: []//'--headless', '--disable-gpu']
@@ -34,17 +35,28 @@ async function entryFunction(url, profilingDuration) {
 
     // Handle tracing events
     const tracingOutput = [];
+    const usageOutput = [];
     Tracing.dataCollected(data => data.value.forEach(x =>
       tracingOutput.push(x)
     ))
     await Tracing.start();
+    var usageMonitorInterval = setInterval(() => pidusage(chrome.pid, (err, stats) => {
+      if (err) {
+        throw err;
+        process.abort();
+      }
+      console.log(stats);
+      usageOutput.push(stats);
+    }), 200);
 
 		await sleep(profilingDuration);
 
     console.log("Terminating...")
+    clearInterval(usageMonitorInterval);
     await Tracing.end();
     await Tracing.tracingComplete();
-		await fse.writeJson('tracingOutput.json', tracingOutput);
+		await fse.writeJson(outputName + '-tracing.json', tracingOutput);
+		await fse.writeJson(outputName + '-usage.json', usageOutput);
   } catch (err) {
     console.error(err);
     console.log("Terminating...")
