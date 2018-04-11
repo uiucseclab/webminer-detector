@@ -1,4 +1,5 @@
 npm start file:///Users/zyu/git/s-cs460/scanner/basic-miner1.html miner1
+npm start 'https://eenteslavoorsimon.be/' miner2
 npm start 'https://news.google.com/news/?ned=us&gl=US&hl=en' google-news1
 npm start https://www.youtube.com/watch?v=v_mOkUk5CDw youtube1
 npm start 'http://abcnews.go.com/US/pastor-church-attended-25000-steps-amid-misconduct-allegations/story?id=54383250' news-with-ads1
