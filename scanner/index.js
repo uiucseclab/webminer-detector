@@ -74,6 +74,6 @@ async function entryFunction(url, profilingDuration, outputName) {
 // await Page.navigate({url: 'https://krakenbenchmark.mozilla.org/kraken-1.1/driver.html'});
 // await Page.navigate({url: 'https://www.google.com/'});
 const url = process.argv[2];
-const duration = process.argv[3];
-const output = process.argv[4];
+const output = process.argv[3];
+const duration = process.argv[4] || 30000; // By default, 30s
 entryFunction(url, duration, output);
