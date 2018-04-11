@@ -20,8 +20,10 @@ var TRACE_CATEGORIES = "cdp.perf,blink,cc,netlog,renderer.scheduler,toplevel,v8"
 
 async function entryFunction(url, profilingDuration, outputName) {
   try {
+    await fse.ensureDir("chromeUserData");
     var chrome = await chromeLauncher.launch({
-      chromeFlags: []//'--headless', '--disable-gpu']
+      chromeFlags: [],//'--headless', '--disable-gpu']
+      userDataDir: "chromeUserData",
     });
     var client = await crp({
       host: 'localhost',
