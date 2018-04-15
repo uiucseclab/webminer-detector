@@ -44,6 +44,7 @@ function handleConnection(socket) {
         }
 
         var urlCheck = url.parse(message.url);
+        // TODO: Decide on whether it's safe to only test the hostname.
         urlCheck = urlCheck.hostname;
 
         rdsClient.get(urlCheck, async function(err, data) {
