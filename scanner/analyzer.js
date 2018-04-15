@@ -88,6 +88,13 @@ function readTracingOutput(tracingOutput) {
   return {callByFrames, callByNames, callByURLs, profilingDuration};
 }
 
+function printCounters(ctr, topN = 5) {
+  ctr = _.map(ctr, (x, k) => [x, k]);
+  ctr = _.sortBy(ctr, ([x, k]) => -x);
+  for (let i = 0; i < topN && i < ctr.length; i++)
+    console.log(ctr[i][0], ctr[i][1]);
+}
+
 // Returns 1,2,3 (or null if error)
 // 1: Definitely malicious
 // 2: Suspicious
@@ -100,6 +107,15 @@ function analyze(tracingOutput, usageOutput) {
   if (tracingOutput === null) return null;
   let {callByFrames, callByNames, callByURLs, profilingDuration} = tracingOutput;
   let totalRuntime = _.sum(_.map(callByFrames, x=>x));
+
+  console.log('----- callByFrames -----');
+  printCounters(callByFrames);
+  console.log('----- callByNames -----');
+  printCounters(callByNames);
+  console.log('----- callByURLs -----');
+  printCounters(callByURLs);
+  console.log('----------------------');
+  console.log('profilingDuration: ', profilingDuration);
 
   // JS scripts running in non-window frames to gain multithread advantage
   if (undefined in callByFrames)
