@@ -42,7 +42,7 @@ async function runChromeProfiler(url, profilingDuration, chromeFlags) {
       tracingOutput.push(x)
     ))
     await Tracing.start();
-    let usageMonitorInterval = setInterval(() => pidusage(chrome.pid, (err, stats) => {
+    let usageMonitorInterval = setInterval(() => chrome && pidusage(chrome.pid, (err, stats) => {
       if (err) {
         console.log('Error when fetching CPU usages: ', err)
       }
@@ -54,7 +54,7 @@ async function runChromeProfiler(url, profilingDuration, chromeFlags) {
     clearInterval(usageMonitorInterval);
     await Tracing.end();
     await Tracing.tracingComplete();
-    return tracingOutput, usageOutput;
+    return [tracingOutput, usageOutput];
   } catch (err) {
     console.error(err);
     return null;
