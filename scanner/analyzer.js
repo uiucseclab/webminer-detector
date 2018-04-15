@@ -132,7 +132,7 @@ function analyze(tracingOutput, usageOutput) {
 
 module.exports = {analyze};
 
-(async function () {
+require.main === module && (async function () {
   try {
     let profilerResult = await runChromeProfiler(url, profilingDuration, [
       '--headless'
