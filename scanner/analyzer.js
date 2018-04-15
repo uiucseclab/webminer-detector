@@ -12,7 +12,7 @@ const profilingDuration = process.argv[3] || 30000; // By default, 30s
 const SAFE_CPU_LIMIT1 = 5;
 const SAFE_CPU_LIMIT2 = 1;
 const SAFE_CPU_LIMIT3 = 0.8;
-const TRACING_NCPU_LIMIT = 1.5;
+const TRACING_NCPU_LIMIT = 0.5;
 
 // Returns true/false (or null if error)
 // false: Maybe malicious, need more investigation.
@@ -99,14 +99,19 @@ function analyze(tracingOutput, usageOutput) {
   tracingOutput = readTracingOutput(tracingOutput);
   if (tracingOutput === null) return null;
   let {callByFrames, callByNames, callByURLs, profilingDuration} = tracingOutput;
+  let totalRuntime = _.sum(_.map(callByFrames, x=>x));
 
   // JS scripts running in non-window frames to gain multithread advantage
   if (undefined in callByFrames)
     if (callByFrames[undefined] > profilingDuration * TRACING_NCPU_LIMIT)
       return 1;
 
-  // TODO: REMOVE THIS
-  return 4;
+  // The JS scripts simply used too much CPU.
+  // NOTE: GPU operations won't be counted in `totalRuntime`
+  if (totalRuntime > profilingDuration * TRACING_NCPU_LIMIT)
+    return 2;
+
+  return 3;
 }
 
 module.exports = {analyze};
