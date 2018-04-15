@@ -134,7 +134,9 @@ module.exports = {analyze};
 
 (async function () {
   try {
-    let profilerResult = await runChromeProfiler(url, profilingDuration, []);
+    let profilerResult = await runChromeProfiler(url, profilingDuration, [
+      '--headless'
+    ]);
     if (!profilerResult) {
       console.log("Profiling failed.");
       return;
