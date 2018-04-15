@@ -34,14 +34,7 @@ function incrementCount(dict, key, amount) {
 
 const tracingOutputTimestampScale = 1e6;
 
-// Returns 1,2,3 (or null if error)
-// 1: Definitely malicious
-// 2: Suspicious
-// 3: Definitely safe
-function analyze(tracingOutput, usageOutput) {
-  let cpuResult = analyzeCpuUsages(usageOutput);
-  if (cpuResult === true) return 3;
-
+function readTracingOutput(tracingOutput) {
   let fcalls = tracingOutput.filter(x=>x['name'] == 'FunctionCall');
   let fcallsByIds = {};
   fcalls.forEach(x => {
@@ -87,14 +80,25 @@ function analyze(tracingOutput, usageOutput) {
     }
   }
 
-  console.log(callByFrames);
-  console.log(callByNames);
-  console.log(callByURLs);
-
   let tslist = tracingOutput.map(x => x.ts).filter(x => x);
   let from = _.min(tslist);
   let to = _.max(tslist);
   let profilingDuration = (to - from) / tracingOutputTimestampScale;
+
+  return {callByFrames, callByNames, callByURLs, profilingDuration};
+}
+
+// Returns 1,2,3 (or null if error)
+// 1: Definitely malicious
+// 2: Suspicious
+// 3: Definitely safe
+function analyze(tracingOutput, usageOutput) {
+  let cpuResult = analyzeCpuUsages(usageOutput);
+  if (cpuResult === true) return 3;
+
+  tracingOutput = readTracingOutput(tracingOutput);
+  if (tracingOutput === null) return null;
+  let {callByFrames, callByNames, callByURLs, profilingDuration} = tracingOutput;
 
   // JS scripts running in non-window frames to gain multithread advantage
   if (undefined in callByFrames)
