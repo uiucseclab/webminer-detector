@@ -1,4 +1,4 @@
-node analyzer.js file:///Users/zyu/git/s-cs460/scanner/basic-miner1.html 2000
+node analyzer.js 'http://www.linuxelite.com.br/' 2000
 node analyzer.js 'https://eenteslavoorsimon.be/' 2000
 node analyzer.js 'https://news.google.com/news/?ned=us&gl=US&hl=en' 2000
 node analyzer.js https://www.youtube.com/watch?v=v_mOkUk5CDw 2000
