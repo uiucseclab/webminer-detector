@@ -10,7 +10,9 @@ const outputName = process.argv[3];
 const profilingDuration = process.argv[4] || 30000; // By default, 30s
 
 (async function () {
-  let profilerResult = await runChromeProfiler(url, profilingDuration, []);
+  let profilerResult = await runChromeProfiler(url, profilingDuration, [
+    '--headless'
+  ]);
   if (!profilerResult) {
     console.log("Profiling failed.");
     return;

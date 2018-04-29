@@ -15,4 +15,3 @@ npm start 'http://bitcointicker.co/' "$folder/6-good-ui-$ts" 2000
 npm start 'https://stackoverflow.com/questions/3216013/get-the-last-item-in-an-array' "$folder/7-good-$ts" 2000
 npm start 'https://www.choosechicago.com/restaurants/' "$folder/8-good-$ts" 2000
 npm start 'http://189.26.255.57:8081/' "$folder/9-mal-$ts" 2000
-npm start 'http://188.65.210.23:8081/' "$folder/10-mal-$ts" 2000
