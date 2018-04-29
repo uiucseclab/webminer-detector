@@ -41,7 +41,7 @@ async function runChromeProfiler(url, profilingDuration, chromeFlags) {
     await withTimeout(async () => {
       await Page.navigate({url: url});
       await Page.loadEventFired();
-    }, profilingDuration, "Timeout when loading webpage.");
+    }, Math.max(30000, profilingDuration), "Timeout when loading webpage.");
     console.log('Page is loaded. Starting profiler...')
 
     // Handle tracing events

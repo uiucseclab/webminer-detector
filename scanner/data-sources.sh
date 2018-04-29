@@ -8,7 +8,7 @@ mkdir -p "$folder"
 ts=`date +%s`
 
 runDataSource() {
-	node analyzer.js $1 $3
+	node analyzer.js $1 $3 2>&1 | tee $2
 }
 
 runDataSource 'http://www.linuxelite.com.br/' "$folder/1-mal-$ts" 5000
