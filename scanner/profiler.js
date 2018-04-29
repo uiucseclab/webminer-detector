@@ -12,6 +12,12 @@ async function sleep(t) {
   });
 }
 
+async function withTimeout(promise, duration, timeoutMsg="TIMEOUT!") {
+  return Promise.race([promise(), new Promise((resolve, reject) => {
+    setTimeout(()=>reject(new Error(timeoutMsg)), duration);
+  })]);
+}
+
 // These are the default tracing categories from Chrome
 const TRACE_CATEGORIES = "cdp.perf,blink,cc,netlog,renderer.scheduler,toplevel,v8";
 
@@ -31,8 +37,11 @@ async function runChromeProfiler(url, profilingDuration, chromeFlags) {
     });
     const {Page, Profiler, Tracing} = client;
   	await Page.enable();
-    await Page.navigate({url: url});
-    await Page.loadEventFired();
+
+    await withTimeout(async () => {
+      await Page.navigate({url: url});
+      await Page.loadEventFired();
+    }, profilingDuration, "Timeout when loading webpage.");
     console.log('Page is loaded. Starting profiler...')
 
     // Handle tracing events
