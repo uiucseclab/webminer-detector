@@ -33,3 +33,4 @@ deploy-1vpu-1G-normal/4-good-vid-1524969080-tracing.json filter=lfs diff=lfs mer
 deploy-1vpu-1G-normal/6-good-ui-1524969080-tracing.json filter=lfs diff=lfs merge=lfs -text
 deploy-1vpu-1G-normal/8-good-1524969080-tracing.json filter=lfs diff=lfs merge=lfs -text
 deploy-1vpu-1G-normal/9-mal-1524969080-tracing.json filter=lfs diff=lfs merge=lfs -text
+deploy-1vpu-1G-5threads/*-tracking.json filter=lfs diff=lfs merge=lfs -text
