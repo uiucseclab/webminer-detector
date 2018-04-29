@@ -17,6 +17,10 @@ const TRACING_NCPU_LIMIT = 0.5;
 // Returns true/false (or null if error)
 // false: Maybe malicious, need more investigation.
 // true: Definitely safe
+function averageCpuUsage(usageOutput) {
+  const cpuUsages = usageOutput.filter(x=>'cpu' in x).map(x => x['cpu']);
+  return _.mean(cpuUsages);
+}
 function analyzeCpuUsages(usageOutput) {
   const cpuUsages = usageOutput.filter(x=>'cpu' in x).map(x => x['cpu']);
   if (!cpuUsages || !cpuUsages.length)
@@ -100,13 +104,13 @@ function printCounters(ctr, topN = 5) {
 // 2: Suspicious
 // 3: Definitely safe
 function analyze(tracingOutput, usageOutput) {
-  let cpuResult = analyzeCpuUsages(usageOutput);
-  if (cpuResult === true) return 3;
-
   tracingOutput = readTracingOutput(tracingOutput);
   if (tracingOutput === null) return null;
   let {callByFrames, callByNames, callByURLs, profilingDuration} = tracingOutput;
   let totalRuntime = _.sum(_.map(callByFrames, x=>x));
+
+  console.log('JS CPU usage: ', totalRuntime / profilingDuration * 100);
+  console.log('Process CPU usage: ', averageCpuUsage(usageOutput));
 
   console.log('----- callByFrames -----');
   printCounters(callByFrames);
