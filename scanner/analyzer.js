@@ -20,8 +20,10 @@ const whitelist = [
 function isUrlWhitelisted(url) {
   url = new String(url);
   for(let x of whitelist) {
-    if (url.match(x))
+    if (url.match(x)) {
+      console.log("URL is whitelisted:", url);
       return true;
+    }
   }
   return false;
 }
@@ -185,8 +187,6 @@ function analyze(tracingOutput, usageOutput) {
   let [urlCounters, allURLs] = countersAndKeys[2];
   let badUrlsToScores = {};
   allURLs.forEach(key => {
-    if (isUrlWhitelisted(key))
-      return;
     let timeline = getTimeline(urlCounters, key, cpuUsages);
     let sum = 0;
     let prev_high = false;
@@ -196,7 +196,7 @@ function analyze(tracingOutput, usageOutput) {
       prev_high = x > TIMELINE_THRESHOLD
     });
     let score = sum / timeline.length;
-    if (score > 0.05)
+    if (score > 0.05 && !isUrlWhitelisted(key))
       badUrlsToScores[key] = score;
   });
   console.log("Bad urls and their scores:")
