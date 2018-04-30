@@ -13,6 +13,10 @@ socket.connect(port, host);
 socket.on('connect', function() {
     socket.sendMessage({url: urlToTest});
     socket.on('message', function(message) {
-        console.log(message.result + ': ' + message.malicious);
+        if(message.result == 'success') {
+            console.log(message.result + ': ' + message.malicious);
+        } else {
+            console.log(message.result + ': ' + message.reason);
+        }
     });
 });
