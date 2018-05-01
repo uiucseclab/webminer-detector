@@ -1,0 +1,8 @@
+Error: Timeout when loading webpage.
+    at Timeout.setTimeout [as _onTimeout] (/home/ubuntu/CS460Backend/scanner/profiler.js:18:27)
+    at ontimeout (timers.js:478:11)
+    at tryOnTimeout (timers.js:302:5)
+    at Timer.listOnTimeout (timers.js:262:5)
+Terminating...
+Terminated
+Profiling failed.

@@ -1,0 +1,15 @@
+Page is loaded. Starting profiler...
+Terminating...
+Terminated
+----------------------
+--------START---------
+----------------------
+AVERAGE Process CPU usage:  4.369565217391305
+Profiling duration:  5.304549
+----------------------
+None frame score: 0
+----------------------
+Bad urls and their scores:
+{ 'http://bitcointicker.co/tickerHistv24.js?4': 0.13289181962129099 }
+----------------------
+Analysis result: Label = 2

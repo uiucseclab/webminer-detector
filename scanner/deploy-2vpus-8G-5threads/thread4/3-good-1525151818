@@ -1,0 +1,21 @@
+Page is loaded. Starting profiler...
+Terminating...
+Terminated
+----------------------
+--------START---------
+----------------------
+AVERAGE Process CPU usage:  7.8913043478260905
+Profiling duration:  10.478715
+----------------------
+None frame score: 0
+----------------------
+Bad urls and their scores:
+{}
+----------------------
+Analysis result: Label = 3
+Error when fetching CPU usages:  Error: No maching pid found
+    at /home/ubuntu/CS460Backend/scanner/node_modules/pidusage/lib/ps.js:48:19
+    at ChildProcess.<anonymous> (/home/ubuntu/CS460Backend/scanner/node_modules/pidusage/lib/bin.js:44:5)
+    at ChildProcess.emit (events.js:159:13)
+    at maybeClose (internal/child_process.js:943:16)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:220:5)

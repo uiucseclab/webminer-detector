@@ -1,0 +1,15 @@
+Page is loaded. Starting profiler...
+Terminating...
+Terminated
+----------------------
+--------START---------
+----------------------
+AVERAGE Process CPU usage:  6.554545454545454
+Profiling duration:  7.648712
+----------------------
+None frame score: 0.00261437908496732
+----------------------
+Bad urls and their scores:
+{}
+----------------------
+Analysis result: Label = 3

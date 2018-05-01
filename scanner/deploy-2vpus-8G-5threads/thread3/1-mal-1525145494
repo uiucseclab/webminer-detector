@@ -1,0 +1,12 @@
+Page is loaded. Starting profiler...
+Terminating...
+Terminated
+----------------------
+--------START---------
+----------------------
+AVERAGE Process CPU usage:  5.095652173913043
+Profiling duration:  5.695895
+----------------------
+None frame score: 0.6684210526315789
+----------------------
+Analysis result: Label = 1

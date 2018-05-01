@@ -1,0 +1,16 @@
+Page is loaded. Starting profiler...
+Terminating...
+Terminated
+----------------------
+--------START---------
+----------------------
+AVERAGE Process CPU usage:  7.831818181818184
+Profiling duration:  6.693676
+----------------------
+None frame score: 0
+----------------------
+URL is whitelisted: [String: 'https://maps.googleapis.com/maps/api/js?libraries=&callback=sv_googleMapsLoader_cb&key=AIzaSyB9tK36atSSbNzH6nDqhq1I9bbFw2Uwnk0']
+Bad urls and their scores:
+{}
+----------------------
+Analysis result: Label = 3

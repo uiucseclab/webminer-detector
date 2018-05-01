@@ -1,0 +1,15 @@
+Page is loaded. Starting profiler...
+Terminating...
+Terminated
+----------------------
+--------START---------
+----------------------
+AVERAGE Process CPU usage:  5.590909090909092
+Profiling duration:  7.469337
+----------------------
+None frame score: 0
+----------------------
+Bad urls and their scores:
+{ 'https://s.ytimg.com/yts/jsbin/web-animations-next-lite.min-vflqEtsI7/web-animations-next-lite.min.js': 0.054868667080245126 }
+----------------------
+Analysis result: Label = 2
