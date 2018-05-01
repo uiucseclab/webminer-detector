@@ -5,6 +5,7 @@ const chromeLauncher = require('chrome-launcher');
 const crp = require('chrome-remote-interface');
 const fse = require('fs-extra');
 const pidusage = require('pidusage');
+const process = require('process');
 
 async function sleep(t) {
   await new Promise(resolve => {
@@ -69,8 +70,9 @@ async function runChromeProfiler(url, profilingDuration, chromeFlags) {
     return null;
   } finally {
     console.log("Terminating...")
-    chrome && chrome.kill();
     client && (await client.close());
+    chrome && chrome.pid && process.kill(chrome.pid, 'SIGKILL');
+    chrome && chrome.kill();
     console.log("Terminated")
   }
 }
