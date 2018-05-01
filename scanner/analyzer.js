@@ -212,7 +212,7 @@ module.exports = {analyze};
 
 require.main === module && (async function () {
   const url = process.argv[2];
-  const profilingDuration = process.argv[3] || 30000; // By default, 30s
+  const profilingDuration = process.argv[3] || 5000; // By default, 5s
 
   try {
     let profilerResult = await runChromeProfiler(url, profilingDuration, [

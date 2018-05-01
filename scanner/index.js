@@ -7,7 +7,7 @@ const {runChromeProfiler} = require('./profiler');
 
 const url = process.argv[2];
 const outputName = process.argv[3];
-const profilingDuration = process.argv[4] || 30000; // By default, 30s
+const profilingDuration = process.argv[4] || 5000; // By default, 5s
 
 (async function () {
   let profilerResult = await runChromeProfiler(url, profilingDuration, [

@@ -9,7 +9,7 @@ var tls = require("tls");
 // Dependencies & Configurations for Profiler/Scanner
 const {runChromeProfiler} = require('../scanner/profiler');
 const {analyze} = require('../scanner/analyzer');
-const ANALYSIS_DURATION = 3000; // 3 seconds
+const ANALYSIS_DURATION = 5000; // 5 seconds
 const WORKER_LIMIT = 5;
 
 //for redis
