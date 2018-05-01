@@ -5,7 +5,7 @@ var tls = require("tls");
 var Fs = require('fs');
 
 const port = 8333;
-const host = '127.0.0.1';
+const host = 'mark1.sytes.net';
 var socket;
 
 const urlToTest = process.argv[2] || 'https://www.google.com';
