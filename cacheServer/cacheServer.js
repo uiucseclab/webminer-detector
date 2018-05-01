@@ -3,6 +3,8 @@ var JsonSocket = require('json-socket');
 var redis = require('redis');
 var validUrl = require('valid-url');
 var url = require("url");
+var Fs = require('fs');
+var tls = require("tls");
 
 // Dependencies & Configurations for Profiler/Scanner
 const {runChromeProfiler} = require('../scanner/profiler');
@@ -24,14 +26,32 @@ rdsClient.on('error', function(err) {
     console.log("redis error: " + err);
 });
 
-//for json tcp server
-var port = 8333;
-var server = net.createServer();
-server.listen(port, function() {
-    console.log('server listening on %j', server.address());
-});
+//parsing argument
+var useSSL = false;
+if (process.argv.indexOf("-s") > -1) {
+    useSSL = true;
+}
 
-server.on('connection', handleConnection);
+//for json tcp/ssl server
+var port = 8333;
+var server;
+if (useSSL) {
+    var tls_options = {
+        key: Fs.readFileSync('./ssl/server.key'),
+        cert: Fs.readFileSync('./ssl/server.crt'),
+    };
+    server = tls.createServer(tls_options);
+    server.listen(port, function() {
+        console.log('TLS cache server listening on %j', server.address());
+    });
+    server.on('secureConnection', handleConnection);
+} else {
+    server = net.createServer();
+    server.listen(port, function() {
+        console.log('TCP cache server listening on %j', server.address());
+    });
+    server.on('connection', handleConnection);
+}
 
 function handleConnection(socket) {
     //decorate net.Socket
