@@ -1,2 +1,1 @@
-I haven't tested the storage functionality fully yet. And from what I checked now it seeems that chrome extension no longer has support over 
-sockets. So now I don't know how to connect to server, perhaps we can do it locally? 
+I haven't tested the storage functionality fully yet. And from what I checked now it seeems that chrome extension no longer has support over sockets. So now I don't know how to connect to server, perhaps we can do it locally? 
