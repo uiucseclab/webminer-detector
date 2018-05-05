@@ -1,12 +1,8 @@
-const net = require('net');
-const JsonSocket = require('json-socket');
+var http = require('http');
+var https = require('https');
 const process = require('process');
 var tls = require("tls");
 var Fs = require('fs');
-
-const port = 8333;
-const host = 'mark1.sytes.net';
-var socket;
 
 const urlToTest = process.argv[2] || 'https://www.google.com';
 
@@ -16,40 +12,54 @@ if (process.argv.indexOf("-s") > -1) {
     useSSL = true;
 }
 
-if(useSSL) {
-    const ssl_options = {
-        // Necessary only if using the client certificate authentication
-        //key: Fs.readFileSync('client-key.pem'),
-        //cert: Fs.readFileSync('client-cert.pem')
-        // Necessary only if the server uses the self-signed certificate
-        //ca: [ Fs.readFileSync('./ssl/server.crt') ]
-        rejectUnauthorized: false //just for test
-    };
-    socket = tls.connect(port, host, ssl_options);
-    socket = new JsonSocket(socket);
-    socket.on('secureConnect', function() {
-        socket.sendMessage({url: urlToTest});
-        socket.on('message', function(message) {
-            if(message.result == 'success') {
-                console.log(message.result + ': ' + message.malicious);
-            } else {
-                console.log(message.result + ': ' + message.reason);
-            }
-        });
-    });
+const postData = JSON.stringify({'url': urlToTest});
+const options = {
+    hostname: '127.0.0.1',  //'mark1.sytes.net';
+    port: 8080,
+    path: '/',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(postData)
+    }
+};
 
+if(useSSL) {
+    // const ssl_options = {
+    //     // Necessary only if using the client certificate authentication
+    //     //key: Fs.readFileSync('client-key.pem'),
+    //     //cert: Fs.readFileSync('client-cert.pem')
+    //     // Necessary only if the server uses the self-signed certificate
+    //     //ca: [ Fs.readFileSync('./ssl/server.crt') ]
+    //     rejectUnauthorized: false //just for test
+    // };
+    options.rejectUnauthorized = false; //for test
+    const req = https.request(options, handleResponse);
+    // write data to request body
+    req.write(postData);
+    req.end();
 } else {
-    socket = new JsonSocket(new net.Socket());
-    socket.connect(port, host);
-    //Don't send until we're connected
-    socket.on('connect', function() {
-        socket.sendMessage({url: urlToTest});
-        socket.on('message', function(message) {
+    const req = http.request(options, handleResponse);
+    // write data to request body
+    req.write(postData);
+    req.end();
+}
+
+function handleResponse(response) {  
+    if (response.statusCode == 200) {  
+        var body = "";  
+        response.on('data', function(data) { 
+            body += data; 
+        });
+        response.on('end', function() { 
+            var message = JSON.parse(body);
             if(message.result == 'success') {
                 console.log(message.result + ': ' + message.malicious);
             } else {
                 console.log(message.result + ': ' + message.reason);
             }
-        });
-    });
+        });  
+    } else {  
+        console.log('http request fail');
+    }  
 }
