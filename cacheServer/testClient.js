@@ -14,7 +14,7 @@ if (process.argv.indexOf("-s") > -1) {
 
 const postData = JSON.stringify({'url': urlToTest});
 const options = {
-    hostname: '127.0.0.1',  //'mark1.sytes.net';
+    hostname: 'mark1.sytes.net',
     port: 8080,
     path: '/',
     method: 'POST',
@@ -45,21 +45,21 @@ if(useSSL) {
     req.end();
 }
 
-function handleResponse(response) {  
-    if (response.statusCode == 200) {  
-        var body = "";  
-        response.on('data', function(data) { 
-            body += data; 
+function handleResponse(response) {
+    if (response.statusCode == 200) {
+        var body = "";
+        response.on('data', function(data) {
+            body += data;
         });
-        response.on('end', function() { 
+        response.on('end', function() {
             var message = JSON.parse(body);
             if(message.result == 'success') {
                 console.log(message.result + ': ' + message.malicious);
             } else {
                 console.log(message.result + ': ' + message.reason);
             }
-        });  
-    } else {  
+        });
+    } else {
         console.log('http request fail');
-    }  
+    }
 }
